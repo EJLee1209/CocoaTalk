@@ -22,4 +22,16 @@ interface MyApi {
         @Query("password") password: String,
         @Query("name") name: String
     ) : Boolean
+
+    @GET("/friend/all")
+    suspend fun getAllMyFriend(
+        @Query("user_id") user_id: String
+    ) : List<User>
+
+    @PUT("friend/add")
+    suspend fun addFriend(
+        @Query("user_id") user_id: String,
+        @Query("friend_id") friend_id: String
+    ) : Boolean
+
 }

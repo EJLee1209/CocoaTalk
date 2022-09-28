@@ -17,4 +17,8 @@ class Repository {
     suspend fun login(id: String, password: String) = retrofit.login(id, password)
 
     suspend fun register(id: String, password: String, name: String) = retrofit.register(id, password,name)
+
+    suspend fun getAllMyFriend(user_id: String) = retrofit.getAllMyFriend(user_id)
+
+    suspend fun addFriend(user_id: String, friend_id: String) = retrofit.addFriend(user_id, friend_id)
 }

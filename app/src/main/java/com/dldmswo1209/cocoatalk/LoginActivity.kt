@@ -1,5 +1,6 @@
 package com.dldmswo1209.cocoatalk
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,7 +26,6 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.inputPwEditText.text.toString()
             if(id == "" || password == "") return@setOnClickListener
             viewModel.login(id, password)
-            Log.d("testt", viewModel.currentUser.value.toString())
         }
 
         binding.registerTextView.setOnClickListener {
@@ -37,6 +37,10 @@ class LoginActivity : AppCompatActivity() {
             if(it.uid == -1){
                 Toast.makeText(this, "로그인 실패, 아이디 또는 비밀번호를 확인해주세요",Toast.LENGTH_SHORT).show()
             }else{
+                val sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+                editor.putString("user_id", it.id)
+                editor.commit()
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
