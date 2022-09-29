@@ -1,4 +1,4 @@
-package com.dldmswo1209.cocoatalk
+package com.dldmswo1209.cocoatalk.viewController
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

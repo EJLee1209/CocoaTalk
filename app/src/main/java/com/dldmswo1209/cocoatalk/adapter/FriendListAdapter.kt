@@ -33,8 +33,9 @@ class FriendListAdapter(val itemClick: (User) -> (Unit)): ListAdapter<User,Frien
                     .into(binding.profileImageView)
             }
 
+            // 아이템 클릭시
             binding.root.setOnClickListener {
-                itemClick(user)
+                itemClick(user) // 클릭된 아이템의 User 객체 전달
             }
 
         }

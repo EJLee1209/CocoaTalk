@@ -1,10 +1,9 @@
-package com.dldmswo1209.cocoatalk
+package com.dldmswo1209.cocoatalk.viewController
 
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider

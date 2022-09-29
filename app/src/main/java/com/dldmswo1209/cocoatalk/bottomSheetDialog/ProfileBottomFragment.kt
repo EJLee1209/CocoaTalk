@@ -1,13 +1,12 @@
-package com.dldmswo1209.cocoatalk
+package com.dldmswo1209.cocoatalk.bottomSheetDialog
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import com.bumptech.glide.Glide
+import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.databinding.FragmentProfileBottomBinding
 import com.dldmswo1209.cocoatalk.model.User
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -20,8 +19,8 @@ class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = BottomSheetDialog(requireContext(), theme).apply {
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            behavior.skipCollapsed = true
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED // bottomSheetDialog 가 완전히 펼쳐진 상태로 보여지게 됨
+            behavior.skipCollapsed = true // 드래그하면 dialog 가 바로 닫힘
         }
 
         return dialog
