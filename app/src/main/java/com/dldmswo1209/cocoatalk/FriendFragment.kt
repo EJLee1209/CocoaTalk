@@ -31,7 +31,10 @@ class FriendFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val user_id = (activity as MainActivity).user_id
-        val adapter = FriendListAdapter()
+        val adapter = FriendListAdapter { user ->
+            val bottomSheet = ProfileBottomFragment(user)
+            bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+        }
 
         binding.friendListRecyclerView.adapter = adapter
 

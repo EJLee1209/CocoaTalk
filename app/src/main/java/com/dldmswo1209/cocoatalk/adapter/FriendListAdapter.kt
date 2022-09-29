@@ -13,7 +13,7 @@ import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.databinding.FriendItemBinding
 import com.dldmswo1209.cocoatalk.model.User
 
-class FriendListAdapter(): ListAdapter<User,FriendListAdapter.ViewHolder>(diffUtil) {
+class FriendListAdapter(val itemClick: (User) -> (Unit)): ListAdapter<User,FriendListAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(private val binding: FriendItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user: User){
             binding.nameTextView.text = user.name
@@ -31,6 +31,10 @@ class FriendListAdapter(): ListAdapter<User,FriendListAdapter.ViewHolder>(diffUt
                 Glide.with(binding.root)
                     .load(user.image?.toUri())
                     .into(binding.profileImageView)
+            }
+
+            binding.root.setOnClickListener {
+                itemClick(user)
             }
 
         }

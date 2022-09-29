@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class AddFriendBottomFragment : BottomSheetDialogFragment() {
+class AddFriendBottomFragment() : BottomSheetDialogFragment() {
     private lateinit var binding : FragmentAddFriendBottomBinding
     private val mainViewModel : MainViewModel by activityViewModels()
 
