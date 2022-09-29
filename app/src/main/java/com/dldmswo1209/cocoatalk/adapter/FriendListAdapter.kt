@@ -17,19 +17,21 @@ class FriendListAdapter(val itemClick: (User) -> (Unit)): ListAdapter<User,Frien
     inner class ViewHolder(private val binding: FriendItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user: User){
             binding.nameTextView.text = user.name
-            if(user.state_msg == null){
+            if(user.state_msg == null || user.state_msg == ""){
                 binding.stateMassageTextView.isVisible = false
             }else{
                 binding.stateMassageTextView.text = user.state_msg
                 binding.stateMassageTextView.isVisible = true
             }
-            if(user.image == null) {
+            if(user.image == null || user.image == "") {
                 Glide.with(binding.root)
                     .load(R.drawable.profile_default)
+                    .circleCrop()
                     .into(binding.profileImageView)
             }else{
                 Glide.with(binding.root)
                     .load(user.image?.toUri())
+                    .circleCrop()
                     .into(binding.profileImageView)
             }
 

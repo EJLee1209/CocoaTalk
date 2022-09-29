@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.databinding.FragmentFriendProfileBottomBinding
@@ -38,12 +39,18 @@ class FriendProfileBottomFragment(val user: User) : BottomSheetDialogFragment() 
         super.onViewCreated(view, savedInstanceState)
 
         binding.nameTextView.text = user.name
-        if(user.image == null){
+        if(user.image == null || user.image == ""){
             Glide.with(view)
                 .load(R.drawable.profile_default)
                 .circleCrop()
                 .into(binding.profileImageView)
+        }else{
+            Glide.with(view)
+                .load(user.image?.toUri())
+                .circleCrop()
+                .into(binding.profileImageView)
         }
+        binding.stateMsgTextView.text = user.state_msg
 
         binding.closeButton.setOnClickListener {
             dialog?.dismiss()

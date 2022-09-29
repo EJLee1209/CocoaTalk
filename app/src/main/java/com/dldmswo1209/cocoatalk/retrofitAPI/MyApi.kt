@@ -4,6 +4,7 @@ import com.dldmswo1209.cocoatalk.model.User
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
 
@@ -24,6 +25,15 @@ interface MyApi {
         @Query("name") name: String
     ) : Boolean
 
+    // 프로필 수정
+    @POST("/user/update")
+    suspend fun profileUpdate(
+        @Query("uid") id: Int,
+        @Query("name") name: String,
+        @Query("image") image: String?,
+        @Query("state_msg") state_msg: String?
+    )
+
     // 친구목록 조회
     @GET("/friend/all")
     suspend fun getAllMyFriend(
@@ -31,10 +41,11 @@ interface MyApi {
     ) : List<User>
 
     // 친구 추가
-    @PUT("friend/add")
+    @PUT("/friend/add")
     suspend fun addFriend(
         @Query("user_id") user_id: String,
         @Query("friend_id") friend_id: String
     ) : Boolean
+
 
 }

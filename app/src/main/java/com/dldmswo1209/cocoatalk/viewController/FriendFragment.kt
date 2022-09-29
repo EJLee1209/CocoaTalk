@@ -42,13 +42,30 @@ class FriendFragment : Fragment() {
         initRecyclerView()
         initClickListener()
 
+        mainViewModel.userInfo.observe(viewLifecycleOwner, Observer {
+            binding.stateMassageTextView.text = it.state_msg
+            binding.nameTextView.text = it.name
+            if(it.image == "" || it.image == null){
+                Glide.with(requireContext())
+                    .load(R.drawable.profile_default)
+                    .circleCrop()
+                    .into(binding.profileImageView)
+            }else{
+                Glide.with(requireContext())
+                    .load(it.image?.toUri())
+                    .circleCrop()
+                    .into(binding.profileImageView)
+            }
+        })
+
     }
 
     fun initView(){
         binding.nameTextView.text =  user.name
-        if(user.image == null){
+        if(user.image == "" || user.image == null){
             Glide.with(requireContext())
                 .load(R.drawable.profile_default)
+                .circleCrop()
                 .into(binding.profileImageView)
         }else{
             Glide.with(requireContext())
@@ -56,12 +73,7 @@ class FriendFragment : Fragment() {
                 .circleCrop()
                 .into(binding.profileImageView)
         }
-        if(user.state_msg == null){
-            binding.stateMassageTextView.isVisible = false
-        }else{
-            binding.stateMassageTextView.text = user.state_msg
-            binding.stateMassageTextView.isVisible = true
-        }
+        binding.stateMassageTextView.text = user.state_msg
     }
 
     fun initRecyclerView(){

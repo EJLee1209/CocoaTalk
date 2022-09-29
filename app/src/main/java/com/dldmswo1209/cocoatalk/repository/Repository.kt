@@ -21,6 +21,9 @@ class Repository {
     // 회원가입
     suspend fun register(id: String, password: String, name: String) = retrofit.register(id, password,name)
 
+    // 프로필 업데이트
+    suspend fun profileUpdate(uid: Int, name: String, image: String?, state_msg: String?) = retrofit.profileUpdate(uid, name, image, state_msg)
+
     // 친구목록 조회
     suspend fun getAllMyFriend(user_id: String) = retrofit.getAllMyFriend(user_id)
 

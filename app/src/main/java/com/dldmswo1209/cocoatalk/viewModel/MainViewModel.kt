@@ -9,6 +9,10 @@ import kotlinx.coroutines.launch
 class MainViewModel(application: Application): AndroidViewModel(application) {
     private val repository = Repository()
 
+    private val _userInfo = MutableLiveData<User>()
+    val userInfo : LiveData<User>
+        get() = _userInfo
+
     private val _friendList = MutableLiveData<List<User>>()
     val friendList : LiveData<List<User>>
         get() = _friendList
@@ -26,5 +30,13 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun addFriend(user_id: String, friend_id: String) = viewModelScope.launch {
         // user_id 가 friend_id 를 친구로 추가
         _isNewFriend.postValue(repository.addFriend(user_id, friend_id))
+    }
+
+    fun profileUpdate(uid: Int, name: String, image: String?, state_msg: String?) = viewModelScope.launch {
+        repository.profileUpdate(uid, name, image, state_msg)
+    }
+
+    fun getUserInfo(id: String, password: String) = viewModelScope.launch {
+        _userInfo.postValue(repository.login(id, password))
     }
 }
