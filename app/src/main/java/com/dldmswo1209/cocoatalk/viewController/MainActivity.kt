@@ -2,12 +2,14 @@ package com.dldmswo1209.cocoatalk.viewController
 
 import android.content.Context
 import android.os.*
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.bottomSheetDialog.AddFriendBottomFragment
 import com.dldmswo1209.cocoatalk.databinding.ActivityMainBinding
+import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.viewModel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -15,18 +17,18 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy{
         ActivityMainBinding.inflate(layoutInflater)
     }
-    lateinit var user_id : String
+    lateinit var user: User
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
+        user = intent.getSerializableExtra("user") as User
+
         val friendFragment = FriendFragment()
         val chatFragment = ChatFragment()
-        // 현재 로그인한 유저의 id 를 sharedPreference 에 저장
-        val sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-        user_id = sharedPreferences.getString("user_id", "").toString()
 
         // 액션바 설정
         setSupportActionBar(binding.toolbar)

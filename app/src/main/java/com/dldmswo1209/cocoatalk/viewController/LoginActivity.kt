@@ -40,7 +40,9 @@ class LoginActivity : AppCompatActivity() {
                 val editor = sharedPreferences.edit()
                 editor.putString("user_id", it.id)
                 editor.commit()
-                startActivity(Intent(this, MainActivity::class.java))
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra("user", it)
+                startActivity(intent)
                 finish()
             }
         })

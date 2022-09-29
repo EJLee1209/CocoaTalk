@@ -28,7 +28,7 @@ class AddFriendBottomFragment() : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val user_id = (activity as MainActivity).user_id
+        val user_id = (activity as MainActivity).user.id
 
         binding.closeButton.setOnClickListener {
             dialog?.dismiss()
