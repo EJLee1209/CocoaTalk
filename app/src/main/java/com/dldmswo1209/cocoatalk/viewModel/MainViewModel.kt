@@ -2,6 +2,7 @@ package com.dldmswo1209.cocoatalk.viewModel
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.repository.Repository
 import kotlinx.coroutines.launch
@@ -21,6 +22,10 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     val isNewFriend : LiveData<Boolean>
         get() = _isNewFriend
 
+    private val _myChatRooms = MutableLiveData<List<ChatRoom>>()
+    val myChatRooms : LiveData<List<ChatRoom>>
+        get() = _myChatRooms
+
     // 친구목록 조회
     fun getAllMyFriend(user_id: String) = viewModelScope.launch {
         // user_id 의 모든 친구를 불러옴
@@ -38,5 +43,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun getUserInfo(id: String, password: String) = viewModelScope.launch {
         _userInfo.postValue(repository.login(id, password))
+    }
+
+    fun getAllMyChatRoom(user_id: String) = viewModelScope.launch {
+        _myChatRooms.postValue(repository.getAllMyChatRoom(user_id))
     }
 }

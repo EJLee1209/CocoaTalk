@@ -1,5 +1,6 @@
 package com.dldmswo1209.cocoatalk.retrofitAPI
 
+import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import retrofit2.Call
 import retrofit2.Response
@@ -47,5 +48,9 @@ interface MyApi {
         @Query("friend_id") friend_id: String
     ) : Boolean
 
+    @GET("/my/room")
+    suspend fun getAllMyChatRoom(
+        @Query("user_id") user_id: String
+    ) : List<ChatRoom>
 
 }

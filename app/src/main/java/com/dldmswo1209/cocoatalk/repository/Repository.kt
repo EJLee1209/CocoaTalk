@@ -29,4 +29,6 @@ class Repository {
 
     // 친구 추가
     suspend fun addFriend(user_id: String, friend_id: String) = retrofit.addFriend(user_id, friend_id)
+
+    suspend fun getAllMyChatRoom(user_id: String) = retrofit.getAllMyChatRoom(user_id)
 }

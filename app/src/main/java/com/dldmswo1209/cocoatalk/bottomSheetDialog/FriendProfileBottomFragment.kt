@@ -1,6 +1,7 @@
 package com.dldmswo1209.cocoatalk.bottomSheetDialog
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,8 @@ import com.bumptech.glide.Glide
 import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.databinding.FragmentFriendProfileBottomBinding
 import com.dldmswo1209.cocoatalk.model.User
+import com.dldmswo1209.cocoatalk.viewController.ChatRoomActivity
+import com.dldmswo1209.cocoatalk.viewController.MainActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -54,6 +57,14 @@ class FriendProfileBottomFragment(val user: User) : BottomSheetDialogFragment() 
 
         binding.closeButton.setOnClickListener {
             dialog?.dismiss()
+        }
+
+        binding.chatImageView.setOnClickListener {
+            // 채팅방으로 이동
+            val intent = Intent(requireContext(), ChatRoomActivity::class.java)
+            intent.putExtra("user", (activity as MainActivity).user)
+            intent.putExtra("friend", user)
+            startActivity(intent)
         }
 
     }

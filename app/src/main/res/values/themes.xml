@@ -20,4 +20,9 @@
         <item name="android:windowBackground">@color/black</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>
+    <style name="Theme.CocoaTalk.ChatRoom">
+        <item name="android:statusBarColor">@color/deep_gray</item>
+        <item name="android:windowBackground">@color/deep_gray</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 </resources>

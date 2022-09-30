@@ -47,16 +47,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_margin="10dp"/>
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/chatImageView"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/chat"
-                    android:padding="10dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/editProfileImageView"
-                    android:layout_marginBottom="50dp"/>
+
 
                 <androidx.constraintlayout.utils.widget.ImageFilterView
                     android:id="@+id/editProfileImageView"
@@ -64,21 +55,11 @@
                     android:layout_height="50dp"
                     android:src="@drawable/edit"
                     android:padding="10dp"
-                    app:layout_constraintStart_toEndOf="@id/chatImageView"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="50dp"/>
 
-                <TextView
-                    android:id="@+id/chatTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="채팅"
-                    android:textSize="15sp"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="@id/chatImageView"
-                    app:layout_constraintEnd_toEndOf="@id/chatImageView"
-                    app:layout_constraintTop_toBottomOf="@id/chatImageView"/>
                 <TextView
                     android:id="@+id/editProfileTextView"
                     android:layout_width="wrap_content"
@@ -94,7 +75,7 @@
                     android:id="@+id/line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    app:layout_constraintBottom_toTopOf="@id/chatImageView"
+                    app:layout_constraintBottom_toTopOf="@id/editProfileImageView"
                     android:background="@color/white"
                     android:layout_marginBottom="10dp"/>
 
