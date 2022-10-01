@@ -11,6 +11,13 @@ import retrofit2.http.Query
 
 // 레트로핏 통신 api
 interface MyApi {
+
+    // 사람 찾아요
+    @GET("/user")
+    suspend fun findUser(
+        @Query("id") id: String
+    ) : User
+
     // 로그인
     @GET("/user/login")
     suspend fun login(
@@ -52,5 +59,13 @@ interface MyApi {
     suspend fun getAllMyChatRoom(
         @Query("user_id") user_id: String
     ) : List<ChatRoom>
+
+    @PUT("/room/create")
+    suspend fun createChatRoom(
+        @Query("from_id") from_id: String,
+        @Query("to_id") to_id: String,
+        @Query("subject") subject: String,
+        @Query("time") time: String
+    ): Boolean
 
 }

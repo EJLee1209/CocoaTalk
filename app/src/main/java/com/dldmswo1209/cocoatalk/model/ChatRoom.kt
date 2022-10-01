@@ -1,5 +1,7 @@
 package com.dldmswo1209.cocoatalk.model
 
+import java.io.Serializable
+
 data class ChatRoom(
     val id: Int,
     val from_id: String,
@@ -10,4 +12,4 @@ data class ChatRoom(
     val to_name: String,
     val from_image: String?,
     val to_image: String?
-)
+): Serializable

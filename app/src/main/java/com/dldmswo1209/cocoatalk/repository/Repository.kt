@@ -15,6 +15,8 @@ import retrofit2.Response
 class Repository {
     private val retrofit = RetrofitInstance.getInstance().create(MyApi::class.java)
 
+    suspend fun findUser(id: String) = retrofit.findUser(id)
+
     // 로그인
     suspend fun login(id: String, password: String) = retrofit.login(id, password)
 
@@ -31,4 +33,6 @@ class Repository {
     suspend fun addFriend(user_id: String, friend_id: String) = retrofit.addFriend(user_id, friend_id)
 
     suspend fun getAllMyChatRoom(user_id: String) = retrofit.getAllMyChatRoom(user_id)
+
+    suspend fun createChatRoom(from_id: String, to_id: String, subject: String, time: String) = retrofit.createChatRoom(from_id, to_id, subject, time)
 }

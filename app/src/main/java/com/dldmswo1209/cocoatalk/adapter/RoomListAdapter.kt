@@ -11,7 +11,7 @@ import com.dldmswo1209.cocoatalk.databinding.ChatRoomItemBinding
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 
-class RoomListAdapter(val user: User): ListAdapter<ChatRoom, RoomListAdapter.ViewHolder>(diffUtil) {
+class RoomListAdapter(val user: User, val itemClick: (ChatRoom) -> (Unit)): ListAdapter<ChatRoom, RoomListAdapter.ViewHolder>(diffUtil) {
     inner class ViewHolder(val binding: ChatRoomItemBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(chatRoom: ChatRoom){
             binding.subjectTextView.text = chatRoom.subject
@@ -32,6 +32,9 @@ class RoomListAdapter(val user: User): ListAdapter<ChatRoom, RoomListAdapter.Vie
                         .circleCrop()
                         .into(binding.imageView)
                 }
+            }
+            binding.root.setOnClickListener {
+                itemClick(chatRoom)
             }
 
         }
