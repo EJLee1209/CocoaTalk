@@ -17,12 +17,12 @@ import com.dldmswo1209.cocoatalk.adapter.RoomListAdapter
 import com.dldmswo1209.cocoatalk.databinding.FragmentFriendProfileBottomBinding
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
-import com.dldmswo1209.cocoatalk.viewController.ChatRoomActivity
 import com.dldmswo1209.cocoatalk.viewController.MainActivity
 import com.dldmswo1209.cocoatalk.viewModel.MainViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.*
 
 class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentFriendProfileBottomBinding
@@ -74,6 +74,15 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
             rooms = it
         })
 
+        viewModel.room.observe(this, Observer {
+            Log.d("testt", "observe!")
+            val intent = Intent(requireContext(), ChatRoomActivity::class.java)
+            intent.putExtra("room", it)
+            intent.putExtra("user", user)
+            intent.putExtra("friend_id", friend.id)
+            startActivity(intent)
+        })
+
 
         binding.chatImageView.setOnClickListener {
             // 채팅방으로 이동
@@ -89,10 +98,22 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
             val intent = Intent(requireContext(), ChatRoomActivity::class.java)
             if(room != null){
                 intent.putExtra("room", room)
+                intent.putExtra("user", user)
+                intent.putExtra("friend_id", friend.id)
+                startActivity(intent)
+            }else{
+                CoroutineScope(Dispatchers.IO).launch {
+                    async {
+                        viewModel.createChatRoom(user.id, friend.id,"","")
+                    }.await()
+
+                    async {
+                        viewModel.getRoom(user.id, friend.id)
+                        Log.d("testt", "getRoom!")
+                    }
+                }
+
             }
-            intent.putExtra("user", user)
-            intent.putExtra("friend_id", friend.id)
-            startActivity(intent)
 
         }
 

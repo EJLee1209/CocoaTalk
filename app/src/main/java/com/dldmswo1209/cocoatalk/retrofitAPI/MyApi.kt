@@ -68,4 +68,10 @@ interface MyApi {
         @Query("time") time: String
     ): Boolean
 
+    @GET("/room/info")
+    suspend fun getRoom(
+        @Query("from_id") from_id: String,
+        @Query("to_id") to_id: String
+    ): ChatRoom
+
 }

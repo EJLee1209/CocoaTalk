@@ -1,10 +1,15 @@
 package com.dldmswo1209.cocoatalk.viewModel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
+import com.dldmswo1209.cocoatalk.entity.MessageEntity
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.repository.Repository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
@@ -27,6 +32,22 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     val myChatRooms : LiveData<List<ChatRoom>>
         get() = _myChatRooms
 
+    private val _room = MutableLiveData<ChatRoom>()
+    val room : LiveData<ChatRoom>
+        get() = _room
+
+    private val _isCreated = MutableLiveData<Boolean>()
+    val isCreated : LiveData<Boolean>
+        get() = _isCreated
+
+    private val _messageList = MutableLiveData<List<MessageEntity>>()
+    val messageList : LiveData<List<MessageEntity>>
+        get() = _messageList
+
+    private val _findPerson = MutableLiveData<User>()
+    val findPerson : LiveData<User>
+        get() = _findPerson
+
     // 친구목록 조회
     fun getAllMyFriend(user_id: String) = viewModelScope.launch {
         // user_id 의 모든 친구를 불러옴
@@ -48,5 +69,25 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun getAllMyChatRoom(user_id: String) = viewModelScope.launch {
         _myChatRooms.postValue(repository.getAllMyChatRoom(user_id))
+    }
+
+    fun getRoom(from_id: String, to_id: String) = viewModelScope.launch {
+        _room.postValue(repository.getRoom(from_id, to_id))
+    }
+
+    fun createChatRoom(from_id: String, to_id: String, subject: String, time: String) = viewModelScope.launch {
+        _isCreated.value = repository.createChatRoom(from_id,to_id, subject, time)
+    }
+
+    fun getMessage(roomId: Int) = viewModelScope.launch(Dispatchers.IO) {
+        _messageList.postValue(repository.getMessage(roomId))
+    }
+
+    fun saveMessage(message: MessageEntity) = viewModelScope.launch(Dispatchers.IO) {
+        repository.saveMessage(message)
+    }
+
+    fun findUser(id: String) = viewModelScope.launch {
+        _findPerson.postValue(repository.findUser(id))
     }
 }

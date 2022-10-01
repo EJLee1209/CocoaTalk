@@ -40,7 +40,9 @@ class Repository(context: Context) {
 
     suspend fun createChatRoom(from_id: String, to_id: String, subject: String, time: String) = retrofit.createChatRoom(from_id, to_id, subject, time)
 
-    suspend fun saveMessage(message: MessageEntity) = db.messageDao().saveMessage(message)
+    fun saveMessage(message: MessageEntity) = db.messageDao().saveMessage(message)
 
-    suspend fun getMessage(roomId: Int) = db.messageDao().getMessage(roomId)
+    fun getMessage(roomId: Int) = db.messageDao().getMessage(roomId)
+
+    suspend fun getRoom(from_id: String, to_id: String) = retrofit.getRoom(from_id, to_id)
 }

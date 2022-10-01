@@ -36,13 +36,13 @@ class TalkListAdapter(
         fun bind(message: MessageEntity){
             binding.chatTextView.text = message.text
             binding.timeTextView.text = message.time
-            if(sender.image != "" && sender.image != null){
+            if(receiver.image != "" && receiver.image != null){
                 Glide.with(binding.root)
-                    .load(sender.image?.toUri())
+                    .load(receiver.image?.toUri())
                     .circleCrop()
                     .into(binding.profileImageView)
             }
-            binding.nameTextView.text = sender.name
+            binding.nameTextView.text = receiver.name
         }
     }
 
