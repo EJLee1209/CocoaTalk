@@ -1,17 +1,16 @@
 package com.dldmswo1209.cocoatalk.viewModel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.repository.Repository
 import kotlinx.coroutines.launch
 
 // 로그인 액티비티에서 사용하기 위한 뷰모델
 // 로그인/회원가입을 위한 정보를 저장
-class LoginViewModel : ViewModel() {
-    private val repository = Repository()
+class LoginViewModel(application: Application): AndroidViewModel(application) {
+    val context = getApplication<Application>().applicationContext
+    private val repository = Repository(context)
 
     private val _currentUser = MutableLiveData<User>()
     val currentUser : LiveData<User>

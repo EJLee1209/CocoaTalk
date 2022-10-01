@@ -77,7 +77,7 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
 
         binding.chatImageView.setOnClickListener {
             // 채팅방으로 이동
-            lateinit var room: ChatRoom
+            var room: ChatRoom? = null
             rooms.forEach {
                 if ((user.id == it.from_id && friend.id == it.to_id) ||
                     (user.id == it.to_id && friend.id == it.from_id)
@@ -86,9 +86,10 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
 
                 }
             }
-            Log.d("testt", room.toString())
             val intent = Intent(requireContext(), ChatRoomActivity::class.java)
-            intent.putExtra("room", room)
+            if(room != null){
+                intent.putExtra("room", room)
+            }
             intent.putExtra("user", user)
             intent.putExtra("friend_id", friend.id)
             startActivity(intent)

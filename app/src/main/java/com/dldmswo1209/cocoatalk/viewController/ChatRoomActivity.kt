@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dldmswo1209.cocoatalk.adapter.TalkListAdapter
 import com.dldmswo1209.cocoatalk.databinding.ActivityChatRoomBinding
+import com.dldmswo1209.cocoatalk.entity.MessageEntity
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.User
@@ -15,12 +16,12 @@ import com.dldmswo1209.cocoatalk.viewModel.ChatRoomViewModel
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.EOFException
 import java.net.URISyntaxException
 import java.time.LocalDateTime
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 class ChatRoomActivity() : AppCompatActivity() {
@@ -28,7 +29,7 @@ class ChatRoomActivity() : AppCompatActivity() {
         ActivityChatRoomBinding.inflate(layoutInflater)
     }
     private lateinit var chatAdapter : TalkListAdapter
-    private val msgList = mutableListOf<Message>()
+    private val msgList = mutableListOf<MessageEntity>()
     private lateinit var viewModel: ChatRoomViewModel
     private lateinit var mSocket: Socket
     private var room: ChatRoom? = null
@@ -39,10 +40,24 @@ class ChatRoomActivity() : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[ChatRoomViewModel::class.java]
-        val intent = intent
+
         user = intent.getSerializableExtra("user") as User
         val friend_id = intent.getStringExtra("friend_id").toString()
-        room = intent.getSerializableExtra("room") as ChatRoom
+
+        if(intent.getSerializableExtra("room") == null){
+            viewModel.createChatRoom(user.id, friend_id, "", "")
+        }else {
+            room = intent.getSerializableExtra("room") as ChatRoom
+        }
+
+        viewModel.isCreated.observe(this, Observer {
+            if(it){
+                Toast.makeText(this, "채팅방이 생성되었습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "이미 채팅방이 존재합니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
         viewModel.findUser(friend_id)
 
@@ -54,6 +69,17 @@ class ChatRoomActivity() : AppCompatActivity() {
 
             binding.chatRoomNameTextView.text = friend.name
 
+            viewModel.getMessage(room!!.id)
+
+        })
+
+        viewModel.messageList.observe(this, Observer {
+            it.forEach { msg->
+                msgList.add(msg)
+            }
+            chatAdapter.submitList(msgList)
+            chatAdapter.notifyDataSetChanged()
+            binding.chatRecyclerView.scrollToPosition(msgList.size-1)
         })
 
         try{
@@ -95,20 +121,10 @@ class ChatRoomActivity() : AppCompatActivity() {
             finish()
         }
 
-        viewModel.isCreated.observe(this, Observer {
-            if(it){
-                Toast.makeText(this, "채팅방이 생성되었습니다.", Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, "이미 채팅방이 존재합니다.", Toast.LENGTH_SHORT).show()
-            }
-        })
 
         binding.sendButton.setOnClickListener {
             val message = binding.chatEditText.text.toString()
             if(message == "") return@setOnClickListener
-            if(msgList.size == 0){
-                viewModel.createChatRoom(user.id, friend.id,message,LocalTime.now().toString())
-            }
             sendMessage()
         }
 
@@ -154,13 +170,13 @@ class ChatRoomActivity() : AppCompatActivity() {
                 text = data.getString("text")
                 time = data.getString("time")
 
-                val msg = Message(sender_id, receiver_id, text, time)
-
+                val msg = MessageEntity(0,room!!.id, sender_id, receiver_id, text, time)
+                viewModel.saveMessage(msg)
                 msgList.add(msg)
                 chatAdapter.submitList(msgList)
                 chatAdapter.notifyDataSetChanged()
-
                 binding.chatRecyclerView.scrollToPosition(msgList.size-1)
+
             }catch (e: Exception){
                 return@runOnUiThread
             }

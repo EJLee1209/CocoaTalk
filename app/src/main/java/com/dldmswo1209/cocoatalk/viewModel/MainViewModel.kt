@@ -8,7 +8,8 @@ import com.dldmswo1209.cocoatalk.repository.Repository
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = Repository()
+    val context = getApplication<Application>().applicationContext
+    private val repository = Repository(context)
 
     private val _userInfo = MutableLiveData<User>()
     val userInfo : LiveData<User>
