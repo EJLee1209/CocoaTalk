@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.adapter.RoomListAdapter
@@ -75,16 +76,12 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
         })
 
         viewModel.room.observe(this, Observer {
-            Log.d("testt", "observe!")
-            val intent = Intent(requireContext(), ChatRoomActivity::class.java)
-            intent.putExtra("room", it)
-            intent.putExtra("user", user)
-            intent.putExtra("friend_id", friend.id)
-            startActivity(intent)
+            (activity as MainActivity).openChatRoomDrawer(it)
+            Log.d("testt", "observe")
         })
 
-
         binding.chatImageView.setOnClickListener {
+            dialog?.dismiss()
             // 채팅방으로 이동
             var room: ChatRoom? = null
             rooms.forEach {
@@ -95,28 +92,22 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
 
                 }
             }
-            val intent = Intent(requireContext(), ChatRoomActivity::class.java)
             if(room != null){
-                intent.putExtra("room", room)
-                intent.putExtra("user", user)
-                intent.putExtra("friend_id", friend.id)
-                startActivity(intent)
+                (activity as MainActivity).openChatRoomDrawer(room!!)
+                Log.d("testt", "call openChatRoomDrawer(room!!)")
             }else{
-                CoroutineScope(Dispatchers.IO).launch {
+                lifecycleScope.launch {
                     async {
                         viewModel.createChatRoom(user.id, friend.id,"","")
+                        Log.d("testt", "call createChatRoom")
+                        delay(200)
                     }.await()
-
                     async {
                         viewModel.getRoom(user.id, friend.id)
-                        Log.d("testt", "getRoom!")
+                        Log.d("testt", "call getRoom")
                     }
                 }
-
             }
-
         }
-
-
     }
 }
