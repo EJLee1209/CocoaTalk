@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ColumnInfo
 
+// message 테이블 구조
 @Entity(tableName = "message")
 data class MessageEntity(
     @PrimaryKey(autoGenerate = true)
