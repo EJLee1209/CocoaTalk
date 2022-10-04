@@ -2,6 +2,7 @@ package com.dldmswo1209.cocoatalk.bottomSheetDialog
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,10 +51,10 @@ class AddFriendBottomFragment() : BottomSheetDialogFragment() {
                 async {
                     mainViewModel.addFriend(user_id, friend_id)
                     delay(100)
+                    Log.d("testt", "add friend")
                 }.await()
-                async {
-                    mainViewModel.getAllMyFriend(user_id)
-                }
+                Log.d("testt", "getAllMyFriend")
+                mainViewModel.getAllMyFriend(user_id)
             }
             dialog?.dismiss()
         }

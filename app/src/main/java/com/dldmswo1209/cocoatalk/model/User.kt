@@ -9,5 +9,6 @@ data class User(
     var password: String,
     var name: String,
     var image: String? = null, // 프로필 사진
-    var state_msg: String? = null // 상태 메시지
+    var state_msg: String? = null, // 상태 메시지
+    var token: String? = null
 ) : Serializable

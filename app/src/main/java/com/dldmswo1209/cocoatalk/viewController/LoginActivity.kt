@@ -4,11 +4,15 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.dldmswo1209.cocoatalk.databinding.ActivityLoginBinding
 import com.dldmswo1209.cocoatalk.viewModel.LoginViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class LoginActivity : AppCompatActivity() {
     private val binding by lazy{
@@ -18,6 +22,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         binding.loginButton.setOnClickListener {
@@ -36,10 +41,6 @@ class LoginActivity : AppCompatActivity() {
             if(it.uid == -1){
                 Toast.makeText(this, "로그인 실패, 아이디 또는 비밀번호를 확인해주세요",Toast.LENGTH_SHORT).show()
             }else{
-                val sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE)
-                val editor = sharedPreferences.edit()
-                editor.putString("user_id", it.id)
-                editor.commit()
                 val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("user", it)
                 startActivity(intent)

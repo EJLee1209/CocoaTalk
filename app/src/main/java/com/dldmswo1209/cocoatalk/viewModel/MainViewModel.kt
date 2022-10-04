@@ -90,4 +90,16 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     fun findUser(id: String) = viewModelScope.launch {
         _findPerson.postValue(repository.findUser(id))
     }
+
+    fun updateRoom(room_id: Int, subject: String,  time: String) = viewModelScope.launch {
+        repository.updateRoom(room_id, subject, time)
+    }
+
+    fun registerToken(uid: Int, token: String) = viewModelScope.launch {
+        repository.registerToken(uid, token)
+    }
+
+    fun sendPushMessage(token: String, from: String, text: String) = viewModelScope.launch {
+        repository.sendPushMessage(token, from, text)
+    }
 }

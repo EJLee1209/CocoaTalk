@@ -34,15 +34,6 @@ class ChatFragment : Fragment() {
         mainViewModel.getAllMyChatRoom(user.id)
         roomAdapter = RoomListAdapter(user) { room ->
             (activity as MainActivity).openChatRoomDrawer(room)
-//            val intent = Intent(requireContext(), ChatRoomActivity::class.java)
-//            intent.putExtra("user", user)
-//            if(user.id != room.from_id){
-//                intent.putExtra("friend_id", room.from_id)
-//            }else{
-//                intent.putExtra("friend_id", room.to_id)
-//            }
-//            intent.putExtra("room", room)
-//            startActivity(intent)
         }
         binding.chatRoomRecyclerview.adapter = roomAdapter
 

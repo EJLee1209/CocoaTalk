@@ -17,6 +17,8 @@ import com.dldmswo1209.cocoatalk.entity.MessageEntity
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.viewModel.MainViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -47,6 +49,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         user = intent.getSerializableExtra("user") as User
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("testt", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            // Log and toast
+            Log.d("testt", token)
+
+            mainViewModel.registerToken(user.uid, token)
+        })
 
         initView()
         clickEvent()
@@ -144,10 +160,8 @@ class MainActivity : AppCompatActivity() {
     fun connectSocket(room: ChatRoom){
         try{
             Log.d("testt", "Connecting...")
-            mSocket = IO.socket("http://192.168.123.100:8080")
+            mSocket = IO.socket("https://a61e-119-67-181-215.jp.ngrok.io")
             mSocket.connect() // 소켓 연결
-
-
         }catch (e: URISyntaxException){
             Log.d("testt", e.toString())
         }catch (e: Exception){
@@ -226,6 +240,8 @@ class MainActivity : AppCompatActivity() {
 
                 val msg = MessageEntity(0,room!!.id, sender_id, receiver_id, text, time)
                 mainViewModel.saveMessage(msg) // 로컬데이터베이스에 메시지 저장
+                mainViewModel.updateRoom(room!!.id, text, time)
+                mainViewModel.getAllMyChatRoom(user.id)
 
                 msgList.add(msg)
                 adapter.submitList(msgList)
@@ -254,6 +270,9 @@ class MainActivity : AppCompatActivity() {
             jsonObject.put("roomNumber", room!!.id)
         }catch (e: JSONException){
             e.printStackTrace()
+        }
+        if(friend!!.token != null) {
+            mainViewModel.sendPushMessage(friend!!.token!!, user.name, text)
         }
 
         mSocket.emit("chat message", jsonObject)

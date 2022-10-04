@@ -74,4 +74,25 @@ interface MyApi {
         @Query("to_id") to_id: String
     ): ChatRoom
 
+    @POST("/room/update")
+    suspend fun updateRoom(
+        @Query("room_id") room_id: Int,
+        @Query("subject") subject: String,
+        @Query("time") time: String
+    )
+
+    @POST("/register/token")
+    suspend fun registerToken(
+        @Query("uid") uid: Int,
+        @Query("token") token: String
+    )
+
+    // 푸시 알림 전송
+    @POST("/push")
+    suspend fun sendPushMessage(
+        @Query("token") token: String, // 받는 사람의 토큰
+        @Query("from") from: String, // 보내는 사람 이름
+        @Query("text") text: String // 메세지 내용
+    )
+
 }

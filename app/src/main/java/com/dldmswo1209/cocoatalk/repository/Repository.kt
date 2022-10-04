@@ -45,4 +45,10 @@ class Repository(context: Context) {
     fun getMessage(roomId: Int) = db.messageDao().getMessage(roomId)
 
     suspend fun getRoom(from_id: String, to_id: String) = retrofit.getRoom(from_id, to_id)
+
+    suspend fun updateRoom(room_id: Int, subject: String, time: String) = retrofit.updateRoom(room_id, subject, time)
+
+    suspend fun registerToken(uid: Int, token:String) = retrofit.registerToken(uid, token)
+
+    suspend fun sendPushMessage(token: String, from: String, text: String) = retrofit.sendPushMessage(token, from, text)
 }

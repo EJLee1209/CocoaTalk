@@ -142,11 +142,10 @@ class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
             CoroutineScope(Dispatchers.IO).launch {
                 async {
                     mainViewModel.profileUpdate(user.uid, name, image, stateMsg)
-                    delay(10)
+                    delay(100)
                 }.await()
-                async {
-                    mainViewModel.getUserInfo(user.id, user.password)
-                }
+
+                mainViewModel.getUserInfo(user.id, user.password)
             }
         }
 
