@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
     fun connectSocket(room: ChatRoom){
         try{
             Log.d("testt", "Connecting...")
-            mSocket = IO.socket("https://a61e-119-67-181-215.jp.ngrok.io")
+            mSocket = IO.socket("https://e2fc-119-67-181-215.jp.ngrok.io")
             mSocket.connect() // 소켓 연결
         }catch (e: URISyntaxException){
             Log.d("testt", e.toString())
