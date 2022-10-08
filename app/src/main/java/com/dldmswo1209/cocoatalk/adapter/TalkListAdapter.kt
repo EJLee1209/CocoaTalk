@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.dldmswo1209.cocoatalk.databinding.MyChatItemBinding
 import com.dldmswo1209.cocoatalk.databinding.OtherChatItemBinding
-import com.dldmswo1209.cocoatalk.entity.MessageEntity
+import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.User
 
 class TalkListAdapter(
     val sender: User,
     val receiver: User
-): ListAdapter<MessageEntity, RecyclerView.ViewHolder>(diffUtil) {
+): ListAdapter<Message, RecyclerView.ViewHolder>(diffUtil) {
 
     override fun getItemViewType(position: Int): Int {
         return currentList[position].sender_uid
@@ -26,14 +26,14 @@ class TalkListAdapter(
     }
 
     inner class MyViewHolder(val binding: MyChatItemBinding): RecyclerView.ViewHolder(binding.root){
-        fun bind(message: MessageEntity){
+        fun bind(message: Message){
             binding.chatTextView.text = message.text
             binding.timeTextView.text = message.time
         }
     }
 
     inner class OtherViewHolder(val binding: OtherChatItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(message: MessageEntity){
+        fun bind(message: Message){
             binding.chatTextView.text = message.text
             binding.timeTextView.text = message.time
             if(receiver.image != "" && receiver.image != null){
@@ -69,12 +69,12 @@ class TalkListAdapter(
     }
 
     companion object{
-        private val diffUtil = object: DiffUtil.ItemCallback<MessageEntity>(){
-            override fun areItemsTheSame(oldItem: MessageEntity, newItem: MessageEntity): Boolean {
+        private val diffUtil = object: DiffUtil.ItemCallback<Message>(){
+            override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: MessageEntity, newItem: MessageEntity): Boolean {
+            override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
                 return oldItem == newItem
             }
 

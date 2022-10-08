@@ -1,15 +1,12 @@
 package com.dldmswo1209.cocoatalk.viewModel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.dldmswo1209.cocoatalk.entity.MessageEntity
+import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.repository.Repository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
@@ -40,8 +37,8 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     val isCreated : LiveData<Boolean>
         get() = _isCreated
 
-    private val _messageList = MutableLiveData<List<MessageEntity>>()
-    val messageList : LiveData<List<MessageEntity>>
+    private val _messageList = MutableLiveData<List<Message>>()
+    val messageList : LiveData<List<Message>>
         get() = _messageList
 
     private val _findPerson = MutableLiveData<User>()
@@ -83,7 +80,7 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         _messageList.postValue(repository.getMessage(roomId))
     }
 
-    fun saveMessage(message: MessageEntity) = viewModelScope.launch(Dispatchers.IO) {
+    fun saveMessage(message: Message) = viewModelScope.launch(Dispatchers.IO) {
         repository.saveMessage(message)
     }
 

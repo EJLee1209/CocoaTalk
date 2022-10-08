@@ -1,23 +1,13 @@
 package com.dldmswo1209.cocoatalk.repository
 
 import android.content.Context
-import com.dldmswo1209.cocoatalk.database.MessageDatabase
-import com.dldmswo1209.cocoatalk.entity.MessageEntity
-import com.dldmswo1209.cocoatalk.model.User
+import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.retrofitAPI.MyApi
 import com.dldmswo1209.cocoatalk.retrofitAPI.RetrofitInstance
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 // 모든 레트로핏 통신 요청은 Repository 에서 관리
 class Repository(context: Context) {
     private val retrofit = RetrofitInstance.getInstance().create(MyApi::class.java)
-    private val db = MessageDatabase.getDatabase(context)
 
     suspend fun findUser(id: String) = retrofit.findUser(id)
 
@@ -40,9 +30,9 @@ class Repository(context: Context) {
 
     suspend fun createChatRoom(from_id: String, to_id: String, subject: String, time: String) = retrofit.createChatRoom(from_id, to_id, subject, time)
 
-    fun saveMessage(message: MessageEntity) = db.messageDao().saveMessage(message)
+    suspend fun saveMessage(message: Message) = retrofit.saveMessage(message)
 
-    fun getMessage(roomId: Int) = db.messageDao().getMessage(roomId)
+    suspend fun getMessage(roomId: Int) = retrofit.getMessage(roomId)
 
     suspend fun getRoom(from_id: String, to_id: String) = retrofit.getRoom(from_id, to_id)
 

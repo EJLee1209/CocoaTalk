@@ -1,13 +1,9 @@
 package com.dldmswo1209.cocoatalk.retrofitAPI
 
 import com.dldmswo1209.cocoatalk.model.ChatRoom
+import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.User
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Query
+import retrofit2.http.*
 
 // 레트로핏 통신 api
 interface MyApi {
@@ -95,4 +91,31 @@ interface MyApi {
         @Query("text") text: String // 메세지 내용
     )
 
+    @GET("/get/message")
+    suspend fun getMessage(
+        @Query("room_id") room_id: Int
+    ): List<Message>
+
+    @PUT("/save/message")
+    @Headers("accept: application/json",
+        "content-type: application/json")
+    suspend fun saveMessage(
+        @Body jsonparams: Message
+    )
+
+    @POST("/read/message")
+    suspend fun readMessage(
+        @Query("room_id") room_id: Int,
+        @Query("sender_uid") sender_uid: Int
+    )
+
+    @GET("/message/number")
+    suspend fun messageNumber(
+        @Query("room_id") room_id: Int,
+        @Query("sender_uid") sender_uid: Int
+    ) : MessageNumbers
 }
+
+data class MessageNumbers(
+    var messageNumbers: Int
+)

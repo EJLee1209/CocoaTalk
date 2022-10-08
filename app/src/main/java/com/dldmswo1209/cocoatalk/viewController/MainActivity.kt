@@ -1,6 +1,5 @@
 package com.dldmswo1209.cocoatalk.viewController
 
-import android.content.Context
 import android.os.*
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +12,9 @@ import com.dldmswo1209.cocoatalk.R
 import com.dldmswo1209.cocoatalk.adapter.TalkListAdapter
 import com.dldmswo1209.cocoatalk.bottomSheetDialog.AddFriendBottomFragment
 import com.dldmswo1209.cocoatalk.databinding.ActivityMainBinding
-import com.dldmswo1209.cocoatalk.entity.MessageEntity
+import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.ChatRoom
+import com.dldmswo1209.cocoatalk.model.ReadMessage
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.viewModel.MainViewModel
 import com.google.android.gms.tasks.OnCompleteListener
@@ -22,7 +22,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
-import kotlinx.coroutines.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.EOFException
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     var room: ChatRoom? = null
     var friend: User? = null
     private lateinit var mSocket: Socket
-    private val msgList = mutableListOf<MessageEntity>()
+    private val msgList = mutableListOf<Message>()
     private val friendFragment = FriendFragment()
     private val chatFragment = ChatFragment()
 
@@ -160,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     fun connectSocket(room: ChatRoom){
         try{
             Log.d("testt", "Connecting...")
-            mSocket = IO.socket("https://e2fc-119-67-181-215.jp.ngrok.io")
+            mSocket = IO.socket("https://4e51-119-67-181-215.jp.ngrok.io")
             mSocket.connect() // 소켓 연결
         }catch (e: URISyntaxException){
             Log.d("testt", e.toString())
@@ -238,7 +237,13 @@ class MainActivity : AppCompatActivity() {
                 text = data.getString("text")
                 time = data.getString("time")
 
-                val msg = MessageEntity(0,room!!.id, sender_id, receiver_id, text, time)
+                val msg = Message(
+                    room!!.id,
+                    sender_id,
+                    receiver_id,
+                    text,
+                    time,
+                    ReadMessage.NOTREAD)
                 mainViewModel.saveMessage(msg) // 로컬데이터베이스에 메시지 저장
                 mainViewModel.updateRoom(room!!.id, text, time)
                 mainViewModel.getAllMyChatRoom(user.id)
