@@ -6,7 +6,7 @@ import com.dldmswo1209.cocoatalk.retrofitAPI.MyApi
 import com.dldmswo1209.cocoatalk.retrofitAPI.RetrofitInstance
 
 // 모든 레트로핏 통신 요청은 Repository 에서 관리
-class Repository(context: Context) {
+class Repository {
     private val retrofit = RetrofitInstance.getInstance().create(MyApi::class.java)
 
     suspend fun findUser(id: String) = retrofit.findUser(id)
@@ -41,4 +41,8 @@ class Repository(context: Context) {
     suspend fun registerToken(uid: Int, token:String) = retrofit.registerToken(uid, token)
 
     suspend fun sendPushMessage(token: String, from: String, text: String) = retrofit.sendPushMessage(token, from, text)
+
+    suspend fun readMessage(room_id: Int, sender_uid: Int) = retrofit.readMessage(room_id, sender_uid)
+
+    suspend fun messageNumber(room_id: Int, sender_uid: Int) = retrofit.messageNumber(room_id, sender_uid)
 }

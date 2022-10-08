@@ -10,7 +10,9 @@ import com.bumptech.glide.Glide
 import com.dldmswo1209.cocoatalk.databinding.MyChatItemBinding
 import com.dldmswo1209.cocoatalk.databinding.OtherChatItemBinding
 import com.dldmswo1209.cocoatalk.model.Message
+import com.dldmswo1209.cocoatalk.model.ReadMessage
 import com.dldmswo1209.cocoatalk.model.User
+import com.dldmswo1209.cocoatalk.retrofitAPI.MessageNumbers
 
 class TalkListAdapter(
     val sender: User,
@@ -29,6 +31,11 @@ class TalkListAdapter(
         fun bind(message: Message){
             binding.chatTextView.text = message.text
             binding.timeTextView.text = message.time
+            if(message.flag == ReadMessage.NOTREAD){
+                binding.numberTextView.text = "1"
+            }else{
+                binding.numberTextView.text = ""
+            }
         }
     }
 
@@ -42,6 +49,13 @@ class TalkListAdapter(
                     .circleCrop()
                     .into(binding.profileImageView)
             }
+            if(message.flag == ReadMessage.NOTREAD){
+                binding.numberTextView.text = "1"
+            }else{
+                binding.numberTextView.text = ""
+            }
+
+
             binding.nameTextView.text = receiver.name
         }
     }

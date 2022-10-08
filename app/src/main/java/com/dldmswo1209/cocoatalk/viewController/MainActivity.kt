@@ -22,6 +22,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.EOFException
@@ -70,7 +71,14 @@ class MainActivity : AppCompatActivity() {
             friend = it
             adapter = TalkListAdapter(user, it)
             binding.chatRecyclerView.adapter = adapter
-            mainViewModel.getMessage(room!!.id)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                async {
+                    mainViewModel.readMessage(room!!.id, it.uid)
+                    delay(100)
+                }.await()
+                mainViewModel.getMessage(room!!.id)
+            }
         })
         mainViewModel.messageList.observe(this, Observer {
             it.forEach { msg->
@@ -147,9 +155,11 @@ class MainActivity : AppCompatActivity() {
             closeChatRoomDrawer()
         }
 
+
     }
     fun closeChatRoomDrawer(){
         binding.drawerLayout.closeDrawers()
+        Log.d("testt", mSocket.connected().toString())
         msgList.clear()
         mSocket.disconnect()
         mSocket.close()
@@ -158,9 +168,9 @@ class MainActivity : AppCompatActivity() {
     // 서버에 소켓연결을 시도하는 메서드
     fun connectSocket(room: ChatRoom){
         try{
-            Log.d("testt", "Connecting...")
-            mSocket = IO.socket("https://4e51-119-67-181-215.jp.ngrok.io")
+            mSocket = IO.socket("https://3f69-119-67-181-215.jp.ngrok.io")
             mSocket.connect() // 소켓 연결
+
         }catch (e: URISyntaxException){
             Log.d("testt", e.toString())
         }catch (e: Exception){
@@ -191,6 +201,7 @@ class MainActivity : AppCompatActivity() {
 
             // 서버로 전달
             mSocket.emit("connect user", userData) // 가공한 데이터를 서버로 전달
+
             // 서버에서 데이터를 수신(socket.on)하고 유저를 채팅방에 join 시킨다.
         } catch (e: JSONException){
             e.printStackTrace()
@@ -283,6 +294,7 @@ class MainActivity : AppCompatActivity() {
         mSocket.emit("chat message", jsonObject)
 
     }
+
 
 }
 

@@ -31,6 +31,16 @@
             app:layout_constraintEnd_toStartOf="@id/chatTextView"
             app:layout_constraintBottom_toBottomOf="@id/chatTextView"
             android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/numberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/timeTextView"
+            app:layout_constraintEnd_toEndOf="@id/timeTextView"
+            android:text="1"
+            android:textColor="@color/cocoa_yellow"
+            android:textSize="12sp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

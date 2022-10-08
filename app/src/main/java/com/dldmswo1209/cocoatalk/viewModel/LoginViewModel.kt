@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 // 로그인/회원가입을 위한 정보를 저장
 class LoginViewModel(application: Application): AndroidViewModel(application) {
     val context = getApplication<Application>().applicationContext
-    private val repository = Repository(context)
+    private val repository = Repository()
 
     private val _currentUser = MutableLiveData<User>()
     val currentUser : LiveData<User>

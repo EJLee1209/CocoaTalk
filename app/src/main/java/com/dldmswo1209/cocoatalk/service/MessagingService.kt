@@ -1,12 +1,18 @@
 package com.dldmswo1209.cocoatalk.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.ViewModelProvider
 import com.dldmswo1209.cocoatalk.R
+import com.dldmswo1209.cocoatalk.retrofitAPI.MyApi
+import com.dldmswo1209.cocoatalk.retrofitAPI.RetrofitInstance
+import com.dldmswo1209.cocoatalk.viewController.MainActivity
+import com.dldmswo1209.cocoatalk.viewModel.MainViewModel
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 

@@ -6,12 +6,15 @@ import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.repository.Repository
+import com.dldmswo1209.cocoatalk.retrofitAPI.MessageNumbers
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
-    val context = getApplication<Application>().applicationContext
-    private val repository = Repository(context)
+
+    private val repository = Repository()
 
     private val _userInfo = MutableLiveData<User>()
     val userInfo : LiveData<User>
@@ -44,6 +47,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     private val _findPerson = MutableLiveData<User>()
     val findPerson : LiveData<User>
         get() = _findPerson
+
+    private val _messageNumber = MutableLiveData<MessageNumbers>()
+    val messageNumber : LiveData<MessageNumbers>
+        get() = _messageNumber
+
+
 
     // 친구목록 조회
     fun getAllMyFriend(user_id: String) = viewModelScope.launch {
@@ -98,5 +107,13 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun sendPushMessage(token: String, from: String, text: String) = viewModelScope.launch {
         repository.sendPushMessage(token, from, text)
+    }
+
+    fun readMessage(room_id: Int, sender_uid: Int) = viewModelScope.launch {
+        repository.readMessage(room_id, sender_uid)
+    }
+
+    fun messageNumber(room_id: Int, sender_uid: Int) = viewModelScope.launch {
+        _messageNumber.postValue(repository.messageNumber(room_id, sender_uid))
     }
 }
