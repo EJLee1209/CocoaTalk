@@ -31,11 +31,6 @@ class TalkListAdapter(
         fun bind(message: Message){
             binding.chatTextView.text = message.text
             binding.timeTextView.text = message.time
-            if(message.flag == ReadMessage.NOTREAD){
-                binding.numberTextView.text = "1"
-            }else{
-                binding.numberTextView.text = ""
-            }
         }
     }
 
@@ -49,13 +44,6 @@ class TalkListAdapter(
                     .circleCrop()
                     .into(binding.profileImageView)
             }
-            if(message.flag == ReadMessage.NOTREAD){
-                binding.numberTextView.text = "1"
-            }else{
-                binding.numberTextView.text = ""
-            }
-
-
             binding.nameTextView.text = receiver.name
         }
     }

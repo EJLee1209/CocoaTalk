@@ -103,18 +103,6 @@ interface MyApi {
         @Body jsonparams: Message
     )
 
-    @POST("/read/message")
-    suspend fun readMessage(
-        @Query("room_id") room_id: Int,
-        @Query("sender_uid") sender_uid: Int
-    )
-
-    @GET("/message/number")
-    suspend fun messageNumber(
-        @Query("room_id") room_id: Int,
-        @Query("sender_uid") sender_uid: Int
-    ) : MessageNumbers
-
 }
 
 data class MessageNumbers(

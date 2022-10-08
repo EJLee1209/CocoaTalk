@@ -71,14 +71,7 @@ class MainActivity : AppCompatActivity() {
             friend = it
             adapter = TalkListAdapter(user, it)
             binding.chatRecyclerView.adapter = adapter
-
-            CoroutineScope(Dispatchers.IO).launch {
-                async {
-                    mainViewModel.readMessage(room!!.id, it.uid)
-                    delay(100)
-                }.await()
-                mainViewModel.getMessage(room!!.id)
-            }
+            mainViewModel.getMessage(room!!.id)
         })
         mainViewModel.messageList.observe(this, Observer {
             it.forEach { msg->
@@ -229,8 +222,8 @@ class MainActivity : AppCompatActivity() {
             }catch (e: JSONException){
                 e.printStackTrace()
             }
-
         }
+
     }
     internal var onNewMessage = Emitter.Listener { args->
         runOnUiThread {

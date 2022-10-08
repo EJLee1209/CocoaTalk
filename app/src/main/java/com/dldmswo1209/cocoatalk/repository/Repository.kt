@@ -41,8 +41,4 @@ class Repository {
     suspend fun registerToken(uid: Int, token:String) = retrofit.registerToken(uid, token)
 
     suspend fun sendPushMessage(token: String, from: String, text: String) = retrofit.sendPushMessage(token, from, text)
-
-    suspend fun readMessage(room_id: Int, sender_uid: Int) = retrofit.readMessage(room_id, sender_uid)
-
-    suspend fun messageNumber(room_id: Int, sender_uid: Int) = retrofit.messageNumber(room_id, sender_uid)
 }

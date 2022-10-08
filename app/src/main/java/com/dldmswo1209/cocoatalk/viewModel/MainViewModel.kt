@@ -48,12 +48,6 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     val findPerson : LiveData<User>
         get() = _findPerson
 
-    private val _messageNumber = MutableLiveData<MessageNumbers>()
-    val messageNumber : LiveData<MessageNumbers>
-        get() = _messageNumber
-
-
-
     // 친구목록 조회
     fun getAllMyFriend(user_id: String) = viewModelScope.launch {
         // user_id 의 모든 친구를 불러옴
@@ -107,13 +101,5 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
 
     fun sendPushMessage(token: String, from: String, text: String) = viewModelScope.launch {
         repository.sendPushMessage(token, from, text)
-    }
-
-    fun readMessage(room_id: Int, sender_uid: Int) = viewModelScope.launch {
-        repository.readMessage(room_id, sender_uid)
-    }
-
-    fun messageNumber(room_id: Int, sender_uid: Int) = viewModelScope.launch {
-        _messageNumber.postValue(repository.messageNumber(room_id, sender_uid))
     }
 }
