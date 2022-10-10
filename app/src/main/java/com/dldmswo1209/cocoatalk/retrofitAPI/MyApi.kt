@@ -3,6 +3,7 @@ package com.dldmswo1209.cocoatalk.retrofitAPI
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.User
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 // 레트로핏 통신 api
@@ -29,13 +30,20 @@ interface MyApi {
         @Query("name") name: String
     ) : Boolean
 
-    // 프로필 수정
+    // 프로필 수정(이름, 상메만)
     @POST("/user/update")
     suspend fun profileUpdate(
-        @Query("uid") id: Int,
+        @Query("uid") uid: Int,
         @Query("name") name: String,
-        @Query("image") image: String?,
         @Query("state_msg") state_msg: String?
+    )
+
+    // 프로필 이미지 업로드
+    @Multipart
+    @POST("/save/image")
+    suspend fun profileImageUpload(
+        @Part("uid") uid: Int,
+        @Part image: MultipartBody.Part
     )
 
     // 친구목록 조회
@@ -103,8 +111,6 @@ interface MyApi {
         @Body jsonparams: Message
     )
 
-}
 
-data class MessageNumbers(
-    var messageNumbers: Int
-)
+
+}

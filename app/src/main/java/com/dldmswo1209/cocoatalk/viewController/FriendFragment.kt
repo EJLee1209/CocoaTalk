@@ -1,6 +1,7 @@
 package com.dldmswo1209.cocoatalk.viewController
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +53,7 @@ class FriendFragment : Fragment() {
                     .into(binding.profileImageView)
             }else{
                 Glide.with(requireContext())
-                    .load(it.image?.toUri())
+                    .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${it.image}")
                     .circleCrop()
                     .into(binding.profileImageView)
             }
@@ -61,6 +62,7 @@ class FriendFragment : Fragment() {
     }
 
     fun initView(){
+        mainViewModel.getUserInfo(user.id, user.password)
         binding.nameTextView.text =  user.name
         if(user.image == "" || user.image == null){
             Glide.with(requireContext())

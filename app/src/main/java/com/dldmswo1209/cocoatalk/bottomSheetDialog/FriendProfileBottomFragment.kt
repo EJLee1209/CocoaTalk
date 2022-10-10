@@ -107,7 +107,7 @@ class FriendProfileBottomFragment(val friend: User) : BottomSheetDialogFragment(
                 .into(binding.profileImageView)
         } else {
             Glide.with(binding.root)
-                .load(friend.image?.toUri())
+                .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${friend.image}")
                 .circleCrop()
                 .into(binding.profileImageView)
         }

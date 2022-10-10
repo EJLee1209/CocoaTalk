@@ -4,6 +4,7 @@ import android.content.Context
 import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.retrofitAPI.MyApi
 import com.dldmswo1209.cocoatalk.retrofitAPI.RetrofitInstance
+import okhttp3.MultipartBody
 
 // 모든 레트로핏 통신 요청은 Repository 에서 관리
 class Repository {
@@ -17,8 +18,10 @@ class Repository {
     // 회원가입
     suspend fun register(id: String, password: String, name: String) = retrofit.register(id, password,name)
 
-    // 프로필 업데이트
-    suspend fun profileUpdate(uid: Int, name: String, image: String?, state_msg: String?) = retrofit.profileUpdate(uid, name, image, state_msg)
+    // 프로필 업데이트(이름, 상메만)
+    suspend fun profileUpdate(uid: Int, name: String, state_msg: String?) = retrofit.profileUpdate(uid, name, state_msg)
+
+    suspend fun profileImageUpload(uid: Int, image: MultipartBody.Part) = retrofit.profileImageUpload(uid, image)
 
     // 친구목록 조회
     suspend fun getAllMyFriend(user_id: String) = retrofit.getAllMyFriend(user_id)

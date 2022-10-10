@@ -10,9 +10,7 @@ import com.bumptech.glide.Glide
 import com.dldmswo1209.cocoatalk.databinding.MyChatItemBinding
 import com.dldmswo1209.cocoatalk.databinding.OtherChatItemBinding
 import com.dldmswo1209.cocoatalk.model.Message
-import com.dldmswo1209.cocoatalk.model.ReadMessage
 import com.dldmswo1209.cocoatalk.model.User
-import com.dldmswo1209.cocoatalk.retrofitAPI.MessageNumbers
 
 class TalkListAdapter(
     val sender: User,
@@ -40,7 +38,7 @@ class TalkListAdapter(
             binding.timeTextView.text = message.time
             if(receiver.image != "" && receiver.image != null){
                 Glide.with(binding.root)
-                    .load(receiver.image?.toUri())
+                    .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${receiver.image}")
                     .circleCrop()
                     .into(binding.profileImageView)
             }

@@ -30,7 +30,7 @@ class FriendListAdapter(val itemClick: (User) -> (Unit)): ListAdapter<User,Frien
                     .into(binding.profileImageView)
             }else{
                 Glide.with(binding.root)
-                    .load(user.image?.toUri())
+                    .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${user.image}")
                     .circleCrop()
                     .into(binding.profileImageView)
             }

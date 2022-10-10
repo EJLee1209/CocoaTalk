@@ -6,11 +6,11 @@ import com.dldmswo1209.cocoatalk.model.Message
 import com.dldmswo1209.cocoatalk.model.ChatRoom
 import com.dldmswo1209.cocoatalk.model.User
 import com.dldmswo1209.cocoatalk.repository.Repository
-import com.dldmswo1209.cocoatalk.retrofitAPI.MessageNumbers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
 
@@ -59,8 +59,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         _isNewFriend.postValue(repository.addFriend(user_id, friend_id))
     }
 
-    fun profileUpdate(uid: Int, name: String, image: String?, state_msg: String?) = viewModelScope.launch {
-        repository.profileUpdate(uid, name, image, state_msg)
+    fun profileUpdate(uid: Int, name: String, state_msg: String?) = viewModelScope.launch {
+        repository.profileUpdate(uid, name, state_msg)
+    }
+
+    fun profileImageUpload(uid: Int, image: MultipartBody.Part) = viewModelScope.launch {
+        repository.profileImageUpload(uid, image)
     }
 
     fun getUserInfo(id: String, password: String) = viewModelScope.launch {

@@ -2,8 +2,10 @@ package com.dldmswo1209.cocoatalk.bottomSheetDialog
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
@@ -32,6 +34,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 // 내 프로필을 누르면 아래서 튀어나오는 BottomSheetDialog
 class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
@@ -40,12 +46,17 @@ class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
     private val mainViewModel : MainViewModel by activityViewModels() // 메인 액티비티와 뷰모델 공유
     private var editMode = false // 프로필 편집을 위한 상태인지 아닌지 구분하기 위한 플래그
     private var imageUri: Uri? = null
+    private var body: MultipartBody.Part? = null
 
     private val imageResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){ result ->
         if(result.resultCode == Activity.RESULT_OK){
             imageUri = result.data?.data
+
+            val file = File(absolutelyPath(imageUri, requireContext()))
+            val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
+            body = MultipartBody.Part.createFormData("profile", file.name, requestFile)
 
             imageUri.let {
                 Glide.with(this)
@@ -89,6 +100,19 @@ class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
 
 
     }
+
+    // 절대경로 변환
+    fun absolutelyPath(path: Uri?, context : Context): String {
+        var proj: Array<String> = arrayOf(MediaStore.Images.Media.DATA)
+        var c: Cursor? = context.contentResolver.query(path!!, proj, null, null, null)
+        var index = c?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        c?.moveToFirst()
+
+        var result = c?.getString(index!!)
+
+        return result!!
+    }
+
     private fun initView(user: User){
         // 뷰 초기화
         binding.nameEditText.setText(user.name)
@@ -99,7 +123,7 @@ class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
                 .into(binding.profileImageView)
         }else{
             Glide.with(requireContext())
-                .load(user.image?.toUri())
+                .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${user.image}")
                 .circleCrop()
                 .into(binding.profileImageView)
         }
@@ -136,15 +160,17 @@ class ProfileBottomFragment(val user: User) : BottomSheetDialogFragment() {
 
             val stateMsg = binding.StateMsgEditText.text.toString()
             val name = binding.nameEditText.text.toString()
-            var image = ""
-            if(imageUri != null) image = imageUri.toString()
 
             CoroutineScope(Dispatchers.IO).launch {
+                if(body != null){
+                    async {
+                        mainViewModel.profileImageUpload(user.uid, body!!)
+                    }.await()
+                }
                 async {
-                    mainViewModel.profileUpdate(user.uid, name, image, stateMsg)
+                    mainViewModel.profileUpdate(user.uid, name, stateMsg)
                     delay(100)
                 }.await()
-
                 mainViewModel.getUserInfo(user.id, user.password)
             }
         }

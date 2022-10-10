@@ -20,7 +20,7 @@ class RoomListAdapter(val user: User, val itemClick: (ChatRoom) -> (Unit)): List
                 binding.roomNameTextView.text = chatRoom.to_name
                 if(chatRoom.to_image != "" && chatRoom.to_image != null) {
                     Glide.with(binding.root)
-                        .load(chatRoom.to_image.toUri())
+                        .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${chatRoom.to_image}")
                         .circleCrop()
                         .into(binding.imageView)
                 }
@@ -28,7 +28,7 @@ class RoomListAdapter(val user: User, val itemClick: (ChatRoom) -> (Unit)): List
                 binding.roomNameTextView.text = chatRoom.from_name
                 if(chatRoom.from_image != "" && chatRoom.from_image != null) {
                     Glide.with(binding.root)
-                        .load(chatRoom.from_image.toUri())
+                        .load("https://18f4-119-67-181-215.jp.ngrok.io/get/profileImage?imageName=${chatRoom.from_image}")
                         .circleCrop()
                         .into(binding.imageView)
                 }

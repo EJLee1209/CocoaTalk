@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
     // 서버에 소켓연결을 시도하는 메서드
     fun connectSocket(room: ChatRoom){
         try{
-            mSocket = IO.socket("https://3f69-119-67-181-215.jp.ngrok.io")
+            mSocket = IO.socket("https://18f4-119-67-181-215.jp.ngrok.io")
             mSocket.connect() // 소켓 연결
 
         }catch (e: URISyntaxException){
